@@ -1,4 +1,4 @@
-# Valorant Fantasy Discord Bot
+# FANLORANT
 
 This project is a fantasy Discord bot for Valorant, similar to fantasy sports, where users can get updates on player stats such as kills, deaths, assists, and calculate points based on these stats. The bot will do this all automatically, and allows for people to do so for Valorant which does not yet have a fantasy. 
 
@@ -17,8 +17,8 @@ This project is a fantasy Discord bot for Valorant, similar to fantasy sports, w
 1. **Clone the repository:**
 
     ```bash
-    git clone https://github.com/ntnx0246/valorant-fantasy-bot.git
-    cd valorant-fantasy-bot
+    git clone https://github.com/ntnx0246/fanlorant.git
+    cd fanlorant
     ```
 
 2. **Create and activate a virtual environment:**

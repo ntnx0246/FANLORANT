@@ -1,5 +1,6 @@
 # FANLORANT
 
+With the rise of the e-sports industry, we tackled fantasy e-sports, intuitively! Meet FANLORANT, where popular tactical-FPS sensation VALORANT meets the realm of fantasy e-sports.
 This project is a fantasy Discord bot for Valorant, similar to fantasy sports, where users can get updates on player stats such as kills, deaths, assists, and calculate points based on these stats. The bot will do this all automatically, and allows for people to do so for Valorant which does not yet have a fantasy. 
 
 ## Features

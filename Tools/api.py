@@ -79,20 +79,20 @@ async def send_upcoming_games_embed(interaction: discord.Interaction, number_of_
     for embed in embeds:
         await interaction.followup.send(embed=embed)
         
-async def send_player_embed(interaction: discord.Interaction, player_name: str, region: str):
-    player_data = await get_player_json(region)
-    # print(player_data)
-    # try:
-    player_list = player_data['data']['segments']
-    for player in player_list:
-        print(player)
-        if player['player'] == player_name:
-            embed = discord.Embed(
-            title=player['player'],
-            description="Org: " + player['org'] + " Acs: " + player['kill_deaths'] + " K/D: " + player['average_combat_score'] + " ADR: " + player['kills_per_round'] + " KPR: " + player['assists_per_round'] + " FKPR: " + player['first_deaths_per_round'] + " FDPR: " + player['headshot_percentage'] + " HS%: " + player['clutch_success_percentage'],
-            color=discord.Color.blue()
-            )
-        await interaction.followup.send(embed=embed)
+# async def send_player_embed(interaction: discord.Interaction, player_name: str, region: str):
+#     player_data = await get_player_json(region)
+#     # print(player_data)
+#     # try:
+#     player_list = player_data['data']['segments']
+#     for player in player_list:
+#         print(player)
+#         if player['player'] == player_name:
+#             embed = discord.Embed(
+#             title=player['player'],
+#             description="Org: " + player['org'] + " Acs: " + player['kill_deaths'] + " K/D: " + player['average_combat_score'] + " ADR: " + player['kills_per_round'] + " KPR: " + player['assists_per_round'] + " FKPR: " + player['first_deaths_per_round'] + " FDPR: " + player['headshot_percentage'] + " HS%: " + player['clutch_success_percentage'],
+#             color=discord.Color.blue()
+#             )
+#         await interaction.followup.send(embed=embed)
             
     # except:
     #     await interaction.followup.send("Player not found (I will try to fix this so it does not happen but make sure player name and region is spelled correctly)")

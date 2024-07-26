@@ -40,6 +40,14 @@ def check_if_game_reviewed(url):
     conn.close()
     return exists
 
+def clear_database():
+    """ Clear all the data from the database. """
+    conn = sqlite3.connect('games.db')
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM reviewed_games")
+    conn.commit()
+    conn.close()
+
 # Example usage
 # if __name__ == "__main__":
 #     create_database()

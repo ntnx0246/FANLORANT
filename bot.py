@@ -4,7 +4,12 @@ import asyncio
 from dotenv import load_dotenv
 import os
 import Tools.database as database
+import Tools.games as games
 import Tools.api as api
+import Tools.webscrap as webscrap
+import schedule
+import time
+from threading import Thread
 
 # Load environment variables
 load_dotenv('token.env')
@@ -23,20 +28,20 @@ client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
     
 
-@tree.command(name="news", description="Get news about Val stuff idk")
+@tree.command(name="news", description="Get recent news articles about Valorant")
 async def fetch_news(interaction: discord.Interaction, number_of_articles: app_commands.Range[int, 1, 10] = 3):    
     await interaction.response.defer()
     await api.send_news_embed(interaction, number_of_articles)  
 
-@tree.command(name="upcoming_matches", description="Get info abt upcoming matches likely won't work :D")
+@tree.command(name="upcoming_matches", description="Get info about upcoming matches")
 async def fetch_matches(interaction: discord.Interaction, number_of_games: app_commands.Range[int, 1, 10] = 3):    
     await interaction.response.defer()
     await api.send_upcoming_games_embed(interaction, number_of_games)
     
-@tree.command(name="player_info", description="Get info abt a specific player")
-async def fetch_info(interaction: discord.Interaction, player_name: str = "TenZ", region: str = "na"):    
-    await interaction.response.defer()
-    await api.send_player_embed(interaction, player_name, region) 
+# @tree.command(name="player_info", description="Get info about a specific player")
+# async def fetch_info(interaction: discord.Interaction, player_name: str = "TenZ", region: str = "na"):    
+#     await interaction.response.defer()
+#     await api.send_player_embed(interaction, player_name, region) 
     
 @tree.command(name="update_database", description="Update the database with the latest player kills")
 async def update_database(interaction: discord.Interaction):    
@@ -48,11 +53,21 @@ async def update_database(interaction: discord.Interaction):
     except Exception as e:
         await interaction.followup.send(f"An error occurred: {str(e)}")
 
-@tree.command(name="get_kills", description="Get the kill count of a specific player")
+@tree.command(name="get_kda", description="Get the kda of a specific player")
 async def get_kills(interaction: discord.Interaction, player_name: str):
     kills = database.get_player_kills(player_name)
+    deaths = database.get_player_deaths(player_name)
+    assists = database.get_player_assists(player_name)
     if kills is not None:
-        await interaction.response.send_message(f"{player_name} has {kills} kills.")
+        await interaction.response.send_message(f"{player_name} has {kills} kills, {deaths} deaths, and {assists} assists.")
+    else:
+        await interaction.response.send_message("Player not found in the database.")
+        
+@tree.command(name="get_points", description="Get the points of a specific player")
+async def get_points(interaction: discord.Interaction, player_name: str):
+    points = database.get_player_points(player_name)
+    if points is not None:
+        await interaction.response.send_message(f"{player_name} has {points} points.")
     else:
         await interaction.response.send_message("Player not found in the database.")
         
@@ -70,12 +85,25 @@ async def on_message(message):
     # if str(message.channel.id) == str(channel_id):
     #     await message.channel.send('Hello!')
 
+def schedule_update():
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+        
 async def setup():
+    # Make sure to delete this
+    # games.clear_database()
+    # webscrap.remove_all_players()
+    
     # Sync to a specfic guild
     print("Syncing commands...")
     commands = await tree.sync(guild=discord.Object(id=GUILD_ID))
     print(f"Commands synced: {commands}")
     await tree.sync()
+    
+schedule.every().hour.do(update_database)
+thread = Thread(target=schedule_update)
+thread.start()
 
 client.setup_hook = setup
 

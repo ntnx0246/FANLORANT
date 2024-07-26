@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS players (
     name TEXT NOT NULL,
     kills INTEGER DEFAULT 0,
     deaths INTEGER DEFAULT 0,
-    assists INTEGER DEFAULT 0
+    assists INTEGER DEFAULT 0, 
+    points INTEGER DEFAULT 0
 );
 ''')
 
@@ -31,6 +32,39 @@ def get_player_kills(player_name):
     conn = sqlite3.connect('valplayers.db')
     cursor = conn.cursor()
     cursor.execute("SELECT kills FROM players WHERE name = ?", (player_name,))
+    result = cursor.fetchone()
+    conn.close()
+    if result:
+        return result[0]
+    else:
+        return None
+    
+def get_player_deaths(player_name):
+    conn = sqlite3.connect('valplayers.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT deaths FROM players WHERE name = ?", (player_name,))
+    result = cursor.fetchone()
+    conn.close()
+    if result:
+        return result[0]
+    else:
+        return None
+    
+def get_player_assists(player_name):
+    conn = sqlite3.connect('valplayers.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT assists FROM players WHERE name = ?", (player_name,))
+    result = cursor.fetchone()
+    conn.close()
+    if result:
+        return result[0]
+    else:
+        return None
+    
+def get_player_points(player_name):
+    conn = sqlite3.connect('valplayers.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT points FROM players WHERE name = ?", (player_name,))
     result = cursor.fetchone()
     conn.close()
     if result:

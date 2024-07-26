@@ -1,21 +1,79 @@
-# FRC2024 Season
-***
-## FRC 4079's Crescendo Codespace
-This is where we our robot code is stored. 
-***
-## Getting Started
-* Install [WPILIB VSCode 2024](https://docs.wpilib.org/en/stable/docs/zero-to-robot/step-2/wpilib-setup.html)
-* Install [FRC Game Tools ](https://docs.wpilib.org/en/stable/docs/zero-to-robot/step-2/frc-game-tools.html)
-* Install [Vendor Libraries](https://docs.wpilib.org/en/stable/docs/software/vscode-overview/3rd-party-libraries.html)
-## Important Links
-* [Path Planner](https://github.com/mjansen4857/pathplanner)
-* [Limelight](https://docs.limelightvision.io/docs/docs-limelight/getting-started/summary)https://docs.limelightvision.io/docs/docs-limelight/getting-started/summary)
-* [CTRE Phoenix](https://store.ctr-electronics.com/software/)https://store.ctr-electronics.com/software/)
-* [2024 Game Manual](https://firstfrc.blob.core.windows.net/frc2024/Manual/2024GameManual.pdf)
-## Anything (Sort of) Important
-* Currently just a glorified swerve base
-![The Intake Sorta](https://github.com/OASTEM/Crescendo2024/assets/97996034/0d1d8973-de39-4b52-bf5f-171b2e0aaa16)
-![The Swerve Base Without Stuff](https://github.com/OASTEM/Crescendo2024/assets/97996034/8d969cc8-2e4c-42d6-9612-aa2de4ca53a1)
+# FANLORANT
 
-## Limelety
-![Limelety](https://github.com/OASTEM/Crescendo2024/assets/97996034/9b501e44-de16-4f72-b1f5-70dbe3a920a2)
+With the rise of the e-sports industry, we tackled fantasy e-sports, intuitively! Meet FANLORANT, where popular tactical-FPS sensation VALORANT meets the realm of fantasy e-sports. This project is a fantasy Discord bot for Valorant, similar to fantasy sports, where users can get updates on player stats such as kills, deaths, assists, and calculate points based on these stats. The bot will do this all automatically, and allows for people to do so for Valorant which does not yet have a fantasy. 
+
+## Features
+
+- Fetch and update player stats (kills, deaths, assists) from a specified webpage.
+- Calculate and update player points based on custom criteria:
+  - 1 point per kill
+  - -0.5 points per death
+  - 0.25 points per assist
+- Store and update player stats in a SQLite database.
+- Easy integration with Discord to fetch and display player stats.
+
+## Installation
+
+1. **Clone the repository:**
+
+    ```bash
+    git clone https://github.com/ntnx0246/fanlorant.git
+    cd fanlorant
+    ```
+
+2. **Create and activate a virtual environment:**
+
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows: venv\Scripts\activate
+    ```
+
+3. **Install the required dependencies:**
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4. **Set up environment variables:**
+
+    Create a `.env` file in the root directory and add the following:
+
+    ```env
+    BOT_TOKEN=your_discord_bot_token
+    GUILD_ID=your_discord_guild_id
+    ```
+
+5. **Run the bot:**
+
+    ```bash
+    python bot.py
+    ```
+
+## Usage
+
+1. **Fetch and update player stats:**
+
+    The bot will scrape player stats from the specified webpage and update the SQLite database with the latest information.
+
+2. **Commands:**
+
+    - `!news <number_of_articles>`: Get the latest news about Valorant.
+    - `!upcoming_matches <number_of_games>`: Get information about upcoming matches.
+    - `!player_info <player_name> <region>`: Get information about a specific player.
+    - `!update_database`: Update the database with the latest player kills.
+    - `!get_kda <player_name>`: Get the KDA of a specific player.
+    - `!get_points <player_name>`: Get the points of a specific player.
+
+## Database Schema
+
+The SQLite database (`valplayers.db`) contains a table `players` with the following schema:
+
+```sql
+CREATE TABLE players (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    kills INTEGER DEFAULT 0,
+    deaths INTEGER DEFAULT 0,
+    assists INTEGER DEFAULT 0,
+    points REAL DEFAULT 0
+);

@@ -59,7 +59,6 @@ With the rise of the e-sports industry, we tackled fantasy e-sports, intuitively
 
     - `!news <number_of_articles>`: Get the latest news about Valorant.
     - `!upcoming_matches <number_of_games>`: Get information about upcoming matches.
-    - `!player_info <player_name> <region>`: Get information about a specific player.
     - `!update_database`: Update the database with the latest player kills.
     - `!get_kda <player_name>`: Get the KDA of a specific player.
     - `!get_points <player_name>`: Get the points of a specific player.

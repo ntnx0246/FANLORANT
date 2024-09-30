@@ -18,6 +18,7 @@ load_dotenv('token.env')
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 GUILD_ID = int(os.getenv('GUILD_ID'))
 channel_id = os.getenv('CHANNEL_ID')
+owner_id = os.getenv('OWNER_ID')
 
 # Set up intents for the bot
 intents = discord.Intents.default()
@@ -67,6 +68,7 @@ async def get_points(interaction: discord.Interaction, player_name: str):
 @client.event
 async def on_ready():
     print(f'{client.user} has connected to Discord!')
+    await setup()
 
 @client.event 
 async def on_message(message):
@@ -78,14 +80,29 @@ def schedule_update():
         schedule.run_pending()
         time.sleep(1)
 
+@tree.command(name='sync', description='Owner only')
+async def sync(interaction: discord.Interaction):
+    if interaction.user.id == owner_id:
+        await tree.sync()
+        print('Command tree synced.')
+    else:
+        await interaction.response.send_message('You must be the owner to use this command!')
+
 async def setup():
     # Sync to a specific guild
     print("Syncing commands...")
     commands = await tree.sync(guild=discord.Object(id=GUILD_ID))
     print(f"Commands synced: {commands}")
 
+async def scheduled_update_task():
+    try:
+        await database.update_player_kills()
+        print("Database updated successfully.")
+    except Exception as e:
+        print(f"An error occurred during scheduled update: {str(e)}")
+
 # Schedule the update to run every hour
-schedule.every().hour.do(lambda: asyncio.run_coroutine_threadsafe(update_database_command(None), client.loop))
+schedule.every().hour.do(lambda: asyncio.run_coroutine_threadsafe(scheduled_update_task(), client.loop))
 thread = Thread(target=schedule_update)
 thread.start()
 
